@@ -1,6 +1,5 @@
 #pragma once
 #include "Board.h"
-#include "Figure.h"
 
 class Board::Turn {
 private:
@@ -16,22 +15,27 @@ private:
 
 	char castling = 0;
 	char en_passant = 0;
+	char promotion = 0;
 
 	Board* board = NULL;
 
 	Figure* findEatenFigure(char id, char x, char y);
-public:
-	Turn(std::string turn, Board* _board);
+
+	
 
 	Turn(Figure* _moved_figure, char x_st, char y_st, char x_fn, char y_fn, Board* _board);
 
+	Turn(Figure* _moved_figure, char x_st, char y_st, char x_fn, char y_fn, char _promotion, Board* _board);
+
 	Turn(char _castling, Board* _board);
+public:
+	Turn(std::string turn, Board* _board);
 
 	void operator()();
 
-	bool check();
-
 	void unmake();
+
+	bool check();
 
 	std::string name(); 
 };

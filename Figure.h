@@ -1,5 +1,4 @@
 #pragma once
-#include "Board.h"
 
 class Figure {
 private:

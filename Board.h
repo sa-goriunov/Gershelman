@@ -3,8 +3,6 @@
 #include <string>
 #include "Figure.h"
 
-class Game; class Figure;
-
 class Board {
 private:
 	std::vector<char> board; //board[144]
@@ -26,6 +24,6 @@ public:
 
 	class Turn;
 
-	friend Game;
+	friend class Game;
 	friend int main();
 };
