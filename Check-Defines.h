@@ -1,5 +1,7 @@
 #pragma once
 
+#define CHECK_COORDS(x, y) KING_POSITION + x - y*15
+
 static const bool white_pawn_check[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

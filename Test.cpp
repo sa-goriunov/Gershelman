@@ -1,6 +1,7 @@
 #include "Board.h"
 #include "Game.h"
 #include "Turn.h"
+#include "Check-Defines.h"
 #include <iostream>
 #include <string>
 #include <deque>
@@ -26,11 +27,12 @@ int main() {
 		string hod;
 		cin >> hod;
 		Board::Turn t(hod, a.__board__);
+		cout << endl << t.check() << endl;
+		//cout << white_pawn_check[check_coords(0, -4)];
 		t();
 		history.push_front(t);
 		a.__board__->printTest();
 		cout << endl;
-		cout << t.check() << endl;
 	}
 
 	for (auto i : history) {

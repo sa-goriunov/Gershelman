@@ -1,11 +1,11 @@
 #include "Board.h"
 #include "Turn.h"
-#include "GlobalDefines.h"
+#include "Global-Defines.h"
 
 Board::Turn::Turn(std::string turn, Board* _board) {
 	board = _board;
-	if ((turn == "O-O") || (turn == "o-o") || (turn == "0-0")) castling = 1;
-	else if ((turn == "O-O-O") || (turn == "o-o-o") || (turn == "0-0-0")) castling = 2;
+	if ((turn == "O-O") || (turn == "o-o") || (turn == "0-0")) castling = SHORT_CASTLING;
+	else if ((turn == "O-O-O") || (turn == "o-o-o") || (turn == "0-0-0")) castling = LONG_CASTLING;
 	else {
 		x_start = turn[0] - 'a';
 		y_start = turn[1] - '1';
@@ -19,8 +19,8 @@ Board::Turn::Turn(std::string turn, Board* _board) {
 				moved_figure = tmp; break;
 			}}
 
-		moved_figure_id = board->board[(9 - y_start) * 12 + 2 + x_start];
-		finish_id = board->board[(9 - y_finish) * 12 + 2 + x_finish];
+		moved_figure_id = board->board[coords(x_start, y_start)];
+		finish_id = board->board[coords(x_finish, y_finish)];
 
 		if(moved_figure->id == PAWN){
 			if (((y_start == 1) && (y_finish == 3)) || ((y_start == 6) && (y_finish == 4))) { en_passant = x_finish; }
@@ -46,13 +46,13 @@ Board::Turn::Turn(std::string turn, Board* _board) {
 Board::Turn::Turn(Figure* _moved_figure, char x_st, char y_st, char x_fn, char y_fn, Board* _board) {
 	board = _board;
 	moved_figure = _moved_figure;
-	moved_figure_id = board->board[(9 - y_start) * 12 + 2 + x_start];
+	moved_figure_id = board->board[coords(x_start, y_start)];
 	x_start = x_st;
 	y_start = y_st;
 	x_finish = x_fn;
 	y_finish = y_fn;
 
-	finish_id = board->board[(9 - y_finish) * 12 + 2 + x_finish];
+	finish_id = board->board[coords(x_finish, y_finish)];
 
 	if ((moved_figure->id == PAWN) && (((y_start == 1) && (y_finish == 3)) || ((y_start == 6) && (y_finish == 4)))) en_passant = x_finish;
 
@@ -62,14 +62,14 @@ Board::Turn::Turn(Figure* _moved_figure, char x_st, char y_st, char x_fn, char y
 Board::Turn::Turn(Figure* _moved_figure, char x_st, char y_st, char x_fn, char y_fn, char _promotion, Board* _board) {
 	board = _board;
 	moved_figure = _moved_figure;
-	moved_figure_id = board->board[(9 - y_start) * 12 + 2 + x_start];
+	moved_figure_id = board->board[coords(x_start, y_start)];
 	x_start = x_st;
 	y_start = y_st;
 	x_finish = x_fn;
 	y_finish = y_fn;
 	promotion = _promotion;
 
-	finish_id = board->board[(9 - y_finish) * 12 + 2 + x_finish];
+	finish_id = board->board[coords(x_finish, y_finish)];
 
 	eaten_figure = findEatenFigure(finish_id, x_finish, y_finish);
 }

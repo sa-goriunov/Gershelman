@@ -28,6 +28,9 @@ private:
 	Turn(Figure* _moved_figure, char x_st, char y_st, char x_fn, char y_fn, char _promotion, Board* _board);
 
 	Turn(char _castling, Board* _board);
+
+
+	bool subcheck(char x, char y, char kings_x, char kings_y, Board* board);
 public:
 	Turn(std::string turn, Board* _board);
 

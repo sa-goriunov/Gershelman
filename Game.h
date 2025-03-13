@@ -1,6 +1,6 @@
 #pragma once
 #include "Board.h"
-#include "GlobalDefines.h"
+#include "Global-Defines.h"
 #include <vector>
 
 class Board;
