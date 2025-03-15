@@ -1,5 +1,6 @@
 #pragma once
 #include "Board.h"
+#include <iostream>
 
 class Board::Turn {
 private:
@@ -29,8 +30,9 @@ private:
 
 	Turn(char _castling, Board* _board);
 
+	
 
-	bool subcheck(char x, char y, char kings_x, char kings_y, Board* board);
+	bool subcheck(char x, char y, char kings_x, char kings_y, const Board* board);
 public:
 	Turn(std::string turn, Board* _board);
 
@@ -38,7 +40,7 @@ public:
 
 	void unmake();
 
-	bool check();
+	bool isCheck();
 
 	std::string name(); 
 };

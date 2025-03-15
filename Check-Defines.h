@@ -1,6 +1,10 @@
 #pragma once
 
-#define CHECK_COORDS(x, y) KING_POSITION + x - y*15
+constexpr auto KING_POSITION = 112;
+
+inline int check_coords(char x, char y) {
+	return KING_POSITION + (int)x - (int)y * 15;
+}
 
 static const bool white_pawn_check[] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

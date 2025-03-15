@@ -18,6 +18,9 @@ constexpr auto SHORT_CASTLING = 1;
 constexpr auto LONG_CASTLING = 2;
 
 constexpr auto NUMBER_OF_FIGURES = 16;
-constexpr auto KING_POSITION = 112;
 
-#define coords(x, y) ((9 - y) * 12 + x + 2)
+//#define coords(x, y) ((9 - y) * 12 + x + 2)
+
+inline int coords(char x, char y){
+	return (9 - (int)y) * 12 + (int)x + 2;
+}
