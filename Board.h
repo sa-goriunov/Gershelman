@@ -1,23 +1,18 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "Figure.h"
+#include "Chessman.h"
 
 class Board {
 private:
 	std::vector<char> board; //board[144]
 
-	std::vector<Figure> figures[2];
+	std::vector<Chessman> chessmen[2];
 
-	int64_t zobrist = 0;
+	unsigned __int64 zobrist = 0;
 	char color_turn;
 
-	Board(std::vector<char> _board, std::vector<Figure> white, std::vector<Figure> black, char color) {
-		board = _board;
-		figures[0] = white;
-		figures[1] = black;
-		color_turn = color;
-	}
+	Board(std::vector<char> _board, std::vector<Chessman> white, std::vector<Chessman> black, char color);
 
 public:
 	void printTest();

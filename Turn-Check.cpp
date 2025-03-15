@@ -20,37 +20,37 @@ bool Board::Turn::subcheck(char x, char y, char kings_x, char kings_y, const Boa
 bool Board::Turn::isCheck() {
 	if (castling != 0) return false;
 
-	char x = x_finish - board->figures[(board->color_turn + 1) / 2][0].x;
-	char y = y_finish - board->figures[(board->color_turn + 1) / 2][0].y;
+	char x = x_finish - board->chessmen[(board->color_turn + 1) / 2][0].x;
+	char y = y_finish - board->chessmen[(board->color_turn + 1) / 2][0].y;
 
-	switch (moved_figure->id) {
+	switch (moved_chessman->id) {
 
 	case PAWN: if (board->color_turn == WHITE) {
-		return white_pawn_check[check_coords(x, y)];}
+		return WHITE_PAWN_CHECK[check_coords(x, y)];}
 	        else {
-		      return black_pawn_check[check_coords(x, y)];}
+		      return BLACK_PAWN_CHECK[check_coords(x, y)];}
 
-	case KNIGHT: return knight_check[check_coords(x, y)];
+	case KNIGHT: return KNIGHT_CHECK[check_coords(x, y)];
 
-	case BISHOP: if (bishop_check[check_coords(x, y)]) {
-		char kings_x = board->figures[(board->color_turn + 1) / 2][0].x;
-		char kings_y = board->figures[(board->color_turn + 1) / 2][0].y;
+	case BISHOP: if (BISHOP_CHECK[check_coords(x, y)]) {
+		char kings_x = board->chessmen[(board->color_turn + 1) / 2][0].x;
+		char kings_y = board->chessmen[(board->color_turn + 1) / 2][0].y;
 		return subcheck(x_finish, y_finish, kings_x, kings_y, board);
 	}
 
-	case ROOK: if (rook_check[check_coords(x, y)]) {
-		char kings_x = board->figures[(board->color_turn + 1) / 2][0].x;
-		char kings_y = board->figures[(board->color_turn + 1) / 2][0].y;
+	case ROOK: if (ROOK_CHECK[check_coords(x, y)]) {
+		char kings_x = board->chessmen[(board->color_turn + 1) / 2][0].x;
+		char kings_y = board->chessmen[(board->color_turn + 1) / 2][0].y;
 		return subcheck(x_finish, y_finish, kings_x, kings_y, board);
 	}
 
-	case QUEEN: if (queen_check[check_coords(x, y)]) {
-		char kings_x = board->figures[(board->color_turn + 1) / 2][0].x;
-		char kings_y = board->figures[(board->color_turn + 1) / 2][0].y;
+	case QUEEN: if (QUEEN_CHECK[check_coords(x, y)]) {
+		char kings_x = board->chessmen[(board->color_turn + 1) / 2][0].x;
+		char kings_y = board->chessmen[(board->color_turn + 1) / 2][0].y;
 		return subcheck(x_finish, y_finish, kings_x, kings_y, board);
 	}
 
-	case KING: return king_check[check_coords(x, y)];
+	case KING: return KING_CHECK[check_coords(x, y)];
 
 	default: return false;
 	}

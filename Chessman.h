@@ -1,6 +1,6 @@
 #pragma once
 
-class Figure {
+class Chessman {
 private:
 	char id;
 	char x;
@@ -11,7 +11,7 @@ private:
 	friend class Board;
 	friend int main();
 public:
-	Figure(char _id, char _x, char _y) {
+	Chessman(char _id, char _x, char _y) {
 		id = _id;
 		x = _x;
 		y = _y;

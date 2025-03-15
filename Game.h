@@ -27,13 +27,13 @@ OUTSIDE,OUTSIDE,       OUTSIDE,      OUTSIDE,      OUTSIDE,     OUTSIDE,       O
 OUTSIDE,OUTSIDE,       OUTSIDE,      OUTSIDE,      OUTSIDE,     OUTSIDE,       OUTSIDE,      OUTSIDE,      OUTSIDE,       OUTSIDE, OUTSIDE,OUTSIDE,
 };
 
-std::vector<Figure> white = {
+std::vector<Chessman> white = {
 	{KING, 4, 0 }, { QUEEN, 3, 0 }, { ROOK, 0, 0 }, { ROOK, 7, 0 },
 	{BISHOP, 2, 0}, {BISHOP, 5, 0}, {KNIGHT, 1, 0}, {KNIGHT, 6, 0},
 	{PAWN, 0, 1}, {PAWN, 1, 1}, {PAWN, 2, 1}, {PAWN, 3, 1},
 	{PAWN, 4, 1}, {PAWN, 5, 1}, {PAWN, 6, 1}, {PAWN, 7, 1}
 };
-		std::vector<Figure> black = {
+		std::vector<Chessman> black = {
 	{KING, 4, 7}, {QUEEN, 3, 7}, {ROOK, 0, 7}, {ROOK, 7, 7},
 	{BISHOP, 2, 7}, {BISHOP, 5, 7}, {KNIGHT, 1, 7}, {KNIGHT, 6, 7},
 	{PAWN, 0, 6}, {PAWN, 1, 6}, {PAWN, 2, 6}, {PAWN, 3, 6},
