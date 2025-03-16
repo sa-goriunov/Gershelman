@@ -17,6 +17,7 @@ void Board::printTest() {
 		}
 		cout << endl;
 	}
+	cout << zobrist << endl;
 }
 
 int main() {
@@ -24,9 +25,6 @@ int main() {
 	a.__board__->printTest();
 	deque<Board::Turn> history;
 
-	for (int i = 0; i < 5; i++) {
-		cout << RANDOM_SET[i][1][1][1] << endl;
-	}
 
 	for (int i = 0; i < 6; i++) {
 		string hod;

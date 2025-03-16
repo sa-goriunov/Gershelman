@@ -1,5 +1,6 @@
 #include "Turn.h"
 #include "Global-Defines.h"
+#include "ZObrist-Defines.h"
 
 void Board::Turn::operator()() {
 	switch (castling) {
@@ -11,6 +12,9 @@ void Board::Turn::operator()() {
 			board->board[115] = ROOK;
 			board->chessmen[0][0].x += 2;
 			board->chessmen[0][3].x -= 2;
+			board->zobrist = board->zobrist xor KEY[KING - 1][WHITE_][4][0] xor KEY[KING - 1][WHITE_][6][0]
+				xor KEY[ROOK - 1][WHITE_][7][0] xor KEY[ROOK - 1][WHITE_][5][0];
+			board->history.push_front(board->zobrist);
 		}
 		else {
 			board->board[30] = VOID;
@@ -19,6 +23,9 @@ void Board::Turn::operator()() {
 			board->board[31] = BLACK * ROOK;
 			board->chessmen[1][0].x += 2;
 			board->chessmen[1][3].x -= 2;
+			board->zobrist = board->zobrist xor KEY[KING - 1][BLACK_][4][7] xor KEY[KING - 1][BLACK_][6][7]
+				xor KEY[ROOK - 1][BLACK_][7][7] xor KEY[ROOK - 1][BLACK_][5][7];
+			board->history.push_front(board->zobrist);
 		}
 		break;
 	case LONG_CASTLING: 
@@ -29,6 +36,9 @@ void Board::Turn::operator()() {
 			board->board[113] = ROOK;
 			board->chessmen[0][0].x -= 2;
 			board->chessmen[0][2].x += 3;
+			board->zobrist = board->zobrist xor KEY[KING - 1][WHITE_][4][0] xor KEY[KING - 1][WHITE_][2][0]
+				xor KEY[ROOK - 1][WHITE_][0][0] xor KEY[ROOK - 1][WHITE_][3][0];
+			board->history.push_front(board->zobrist);
 		}
 		else {
 			board->board[30] = VOID;
@@ -37,11 +47,15 @@ void Board::Turn::operator()() {
 			board->board[29] = BLACK * KING;
 			board->chessmen[1][0].x -= 2;
 			board->chessmen[1][2].x += 3;
+			board->zobrist = board->zobrist xor KEY[KING - 1][BLACK_][4][7] xor KEY[KING - 1][BLACK_][2][7]
+				xor KEY[ROOK - 1][BLACK_][0][7] xor KEY[ROOK - 1][BLACK_][3][7];
+			board->history.push_front(board->zobrist);
 		}
 		break;
 	default:
 
 		board->board[coords(x_start, y_start)] = VOID;
+		board->zobrist = board->zobrist xor KEY[moved_chessman->id - 1][(-board->color_turn + 1) / 2][x_start][y_start];
 		moved_chessman->x = x_finish; moved_chessman->y = y_finish;
 		if (promotion != 0) {
 			moved_chessman->id = promotion;
@@ -49,8 +63,12 @@ void Board::Turn::operator()() {
 		if (eaten_chessman != nullptr) {
 			board->board[coords(eaten_chessman->x, eaten_chessman->y)] = VOID;
 			eaten_chessman->enabled = false;
+			board->zobrist = board->zobrist 
+				xor KEY[eaten_chessman->id - 1][(board->color_turn + 1) / 2][eaten_chessman->x][eaten_chessman->y];
 		}
 		board->board[coords(x_finish, y_finish)] = (board->color_turn * moved_chessman->id);
+		board->zobrist = board->zobrist xor KEY[moved_chessman->id - 1][(-board->color_turn + 1) / 2][x_finish][y_finish];
+		board->history.push_front(board->zobrist);
 	}
 
 	board->color_turn *= (-1);
@@ -68,6 +86,9 @@ void Board::Turn::unmake() {
 			board->board[115] = VOID;
 			board->chessmen[0][0].x -= 2;
 			board->chessmen[0][3].x += 2;
+			board->zobrist = board->zobrist xor KEY[KING - 1][WHITE_][4][0] xor KEY[KING - 1][WHITE_][6][0]
+				xor KEY[ROOK - 1][WHITE_][7][0] xor KEY[ROOK - 1][WHITE_][5][0];
+			board->history.pop_front();
 		}
 		else {
 			board->board[33] = BLACK * ROOK_NM;
@@ -76,6 +97,9 @@ void Board::Turn::unmake() {
 			board->board[31] = VOID;
 			board->chessmen[1][0].x -= 2;
 			board->chessmen[1][3].x += 2;
+			board->zobrist = board->zobrist xor KEY[KING - 1][BLACK_][4][7] xor KEY[KING - 1][BLACK_][6][7]
+				xor KEY[ROOK - 1][BLACK_][7][7] xor KEY[ROOK - 1][BLACK_][5][7];
+			board->history.pop_front();
 		}
 		break;
 	case LONG_CASTLING: 
@@ -86,6 +110,9 @@ void Board::Turn::unmake() {
 			board->board[113] = VOID;
 			board->chessmen[0][0].x += 2;
 			board->chessmen[0][2].x -= 3;
+			board->zobrist = board->zobrist xor KEY[KING - 1][WHITE_][4][0] xor KEY[KING - 1][WHITE_][2][0]
+				xor KEY[ROOK - 1][WHITE_][0][0] xor KEY[ROOK - 1][WHITE_][3][0];
+			board->history.pop_front();
 		}
 		else {
 			board->board[30] = BLACK * KING_NM;
@@ -94,10 +121,14 @@ void Board::Turn::unmake() {
 			board->board[29] = VOID;
 			board->chessmen[1][0].x += 2;
 			board->chessmen[1][2].x -= 3;
+			board->zobrist = board->zobrist xor KEY[KING - 1][BLACK_][4][7] xor KEY[KING - 1][BLACK_][2][7]
+				xor KEY[ROOK - 1][BLACK_][0][7] xor KEY[ROOK - 1][BLACK_][3][7];
+			board->history.pop_front();
 		}
 		break;
 	default:
 
+		board->zobrist = board->zobrist xor KEY[moved_chessman->id - 1][(-board->color_turn + 1) / 2][x_finish][y_finish];
 		if (promotion != 0) {
 			moved_chessman->id = PAWN;
 		}
@@ -106,7 +137,11 @@ void Board::Turn::unmake() {
 		if (eaten_chessman != nullptr) {
 			board->board[coords(eaten_chessman->x, eaten_chessman->y)] = (char)(-board->color_turn * eaten_chessman->id);
 			eaten_chessman->enabled = true;
+			board->zobrist = board->zobrist
+				xor KEY[eaten_chessman->id - 1][(board->color_turn + 1) / 2][eaten_chessman->x][eaten_chessman->y];
 		}
 		board->board[coords(x_finish, y_finish)] = finish_id;
+		board->zobrist = board->zobrist xor KEY[moved_chessman->id - 1][(-board->color_turn + 1) / 2][x_start][y_start];
+		board->history.pop_front();
 	}
 }
